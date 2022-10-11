@@ -12,9 +12,10 @@ layout = [
     [sg.Submit(), sg.Cancel()]
 ]
 window = sg.Window('File Compare', layout)
-event, values = window.read()
+"""event, values = window.read()
 if event in ('Submit'):
     print(event, values) #debug
 elif event in ('Exit', 'Cancel'):
     window.close()
 #sg.popup_ok('popup_ok')
+"""
