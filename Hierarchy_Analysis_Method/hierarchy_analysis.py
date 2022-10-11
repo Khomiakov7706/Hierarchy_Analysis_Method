@@ -34,6 +34,10 @@ def matrix(number, matrType, criterionNumber=0):
                     main()
     return A
 
+def consistencyCheck(initialMatrix): # Here will be the function that checks the consistency of the matrix
+    A = initialMatrix
+    return A
+
 def main():
 
     numberCrit = str(input("How many criteria do you want to enter? Type an integer: "))
