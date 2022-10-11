@@ -49,21 +49,22 @@ def consistencyCheck(initialMatrix): # Here will be the function that checks the
         10 : 1.49
     }
     eigenvalue,featurevector=np.linalg.eig(A)
-    print(A)
+    """print(A)
     print('eigenvalue='+str(eigenvalue))
     print('featurevector='+str(featurevector))
     print('max(eigenvalue)='+str(max(eigenvalue)))
     print('len(A)='+str(len(A)))
-    print('meanConsistensyIndex='+str(meanConsistencyIndex[len(A)]))
+    print('meanConsistensyIndex='+str(meanConsistencyIndex[len(A)]))"""
     consistensyIndex = (max(eigenvalue)-len(A))/(len(A)-1)
     print('consistensyIndex='+str(consistensyIndex))
-    consistencyRelation = consistensyIndex/meanConsistencyIndex[len(A)]*100
+    consistencyRelation = consistensyIndex/meanConsistencyIndex[len(A)]
+    print('consistencyRelation='+str(consistencyRelation))
     return consistencyRelation
 
 
 def main():
-    A = np.array([[4,1,-1],[1,4,-1],[-1,-1,4]])
-    print (consistencyCheck(A))
+    A = np.array([[1,4,3,1,3,4],[1/4,1,7,3,1/5,1],[1/3,1/7,1,1/5,1/5,1/6],[1,1/3,5,1,1,1/3],[1/3,5,5,1,1,3],[1/4,1,6,3,1/3,1]])
+    print ("consistencyRelation = "+str(consistencyCheck(A)))
     """numberCrit = str(input("How many criteria do you want to enter? Type an integer: "))
     if numberCrit.isdigit(): # error handling
         A = matrix(number= int(numberCrit), matrType= 'criterion')
