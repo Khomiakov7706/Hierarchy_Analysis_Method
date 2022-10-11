@@ -36,11 +36,35 @@ def matrix(number, matrType, criterionNumber=0):
 
 def consistencyCheck(initialMatrix): # Here will be the function that checks the consistency of the matrix
     A = initialMatrix
-    return A
+    meanConsistencyIndex = {
+        1 : 0,
+        2 : 0,
+        3 : 0.58,
+        4 : 0.9,
+        5 : 1.12,
+        6 : 1.24,
+        7 : 1.32,
+        8 : 1.41,
+        9 : 1.45,
+        10 : 1.49
+    }
+    eigenvalue,featurevector=np.linalg.eig(A)
+    print(A)
+    print('eigenvalue='+str(eigenvalue))
+    print('featurevector='+str(featurevector))
+    print('max(eigenvalue)='+str(max(eigenvalue)))
+    print('len(A)='+str(len(A)))
+    print('meanConsistensyIndex='+str(meanConsistencyIndex[len(A)]))
+    consistensyIndex = (max(eigenvalue)-len(A))/(len(A)-1)
+    print('consistensyIndex='+str(consistensyIndex))
+    consistencyRelation = consistensyIndex/meanConsistencyIndex[len(A)]*100
+    return consistencyRelation
+
 
 def main():
-
-    numberCrit = str(input("How many criteria do you want to enter? Type an integer: "))
+    A = np.array([[4,1,-1],[1,4,-1],[-1,-1,4]])
+    print (consistencyCheck(A))
+    """numberCrit = str(input("How many criteria do you want to enter? Type an integer: "))
     if numberCrit.isdigit(): # error handling
         A = matrix(number= int(numberCrit), matrType= 'criterion')
         print(A)
@@ -72,7 +96,8 @@ def main():
     print(result)
     print()
     for i in range(len(result)):
-            print(f'Alternative {i} = {np.round(result[i], 2)}')
+            print(f'Alternative {i+1} = {np.round(result[i], 2)}')
+            """
 
 
 if __name__ == "__main__":
