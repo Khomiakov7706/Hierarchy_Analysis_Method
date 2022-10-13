@@ -82,8 +82,12 @@ def consistencyOptimization(initialMatrix): # function helps to get the correct 
     #print ("row sums: " + str(np.absolute(array_sum)))
     #print ("max row sum: " + str(max(np.absolute(array_sum))))
     #print ("number of row with maximum sum: " + str(np.argmax(np.absolute(array_sum))))
+    print("\nchanged elements in string number " + str(np.argmax(np.absolute(array_sum))) + ": ")
     for j in range(len(A)): # for each element in the row, that is not correlated, we change aij to wi/wj
+        print(str(A[np.argmax(np.absolute(array_sum)),j])+" element to: ")
         A[np.argmax(np.absolute(array_sum)),j] = weights[np.argmax(np.absolute(array_sum))]/weights[j]
+        print(A[np.argmax(np.absolute(array_sum)),j])
+        print('\n')
     print (A)
     return (A)
 
