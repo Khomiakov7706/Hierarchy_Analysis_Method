@@ -83,12 +83,12 @@ def consistencyOptimization(initialMatrix): # function helps to get the correct 
     return (A)
 
 def main(): 
-    A = np.array([[1,4,3,1,3,4],[1/4,1,7,3,1/5,1],[1/3,1/7,1,1/5,1/5,1/6],[1,1/3,5,1,1,1/3],[1/3,5,5,1,1,3],[1/4,1,6,3,1/3,1]])
-    numberCrit = len(A)
-    print ("consistent matrix :\n"+str(consistencyCheck(A)))
-    """
+    #A = np.array([[1,4,3,1,3,4],[1/4,1,7,3,1/5,1],[1/3,1/7,1,1/5,1/5,1/6],[1,1/3,5,1,1,1/3],[1/3,5,5,1,1,3],[1/4,1,6,3,1/3,1]])
+    #numberCrit = len(A)
+    
+    
     numberCrit = str(input("How many criteria do you want to enter? Type an integer: "))
-    if ((numberCrit.isdigit()) & (numberCrit < 11)): # error handling
+    if ((numberCrit.isdigit()) & (int(numberCrit) < 11)): # error handling
         A = matrix(number= int(numberCrit), matrType= 'criterion')
         print(A)
         weights = vector(A)
@@ -99,7 +99,7 @@ def main():
         main()
     
     numberAlt = str(input("How many alternatives do you want to enter? Type an integer: "))
-    if numberAlt.isdigit(): # error handling
+    if ((numberAlt.isdigit()) & (int(numberAlt) < 11)): # error handling
         leftTable = np.zeros([int(numberAlt),int(numberCrit)])
         print(leftTable)
         for i in range(0, int(numberCrit)):
@@ -120,7 +120,8 @@ def main():
     print()
     for i in range(len(result)):
             print(f'Alternative {i+1} = {np.round(result[i], 2)}')
-"""
+    
+    print ("consistent matrix :\n"+str(consistencyCheck(A)))
 
 if __name__ == "__main__":
     main()
