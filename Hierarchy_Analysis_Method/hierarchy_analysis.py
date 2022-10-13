@@ -34,7 +34,7 @@ def matrix(number, matrType, criterionNumber=0):
                     main()
     return A
 
-def consistencyCheck(initialMatrix): # Here will be the function that checks the consistency of the matrix
+def consistencyCheck(initialMatrix): # function checks the consistency of the matrix
     A = initialMatrix
     meanConsistencyIndex = {
         1 : 0,
@@ -59,12 +59,38 @@ def consistencyCheck(initialMatrix): # Here will be the function that checks the
     print('consistensyIndex='+str(consistensyIndex))
     consistencyRelation = consistensyIndex/meanConsistencyIndex[len(A)]
     print('consistencyRelation='+str(consistencyRelation))
-    return consistencyRelation
+    if (consistencyRelation < 0.1):
+        return consistencyRelation
+    else:
+        return (consistencyCheck(consistencyOptimization(A))) 
 
+def consistencyOptimization(initialMatrix): # function helps to get the correct consistency of the matrix
+    A = initialMatrix 
+    """A = np.array(
+    [[1,4,3,1,3,4],
+    [1/4,1,7,3,1/5,1],
+    [1/3,1/7,1,1/5,1/5,1/6],
+    [1,1/3,5,1,1,1/3],
+    [1/3,5,5,1,1,3],
+    [1/4,1,6,3,1/3,1]])"""
+    weights = vector(A)
+    array_sum = [] 
+    for i in range(len(A)): 
+        array_sum.append(0) 
+        for j in range(len(A)): 
+            array_sum [i] += (A[i,j] - weights[i] / weights[j]) 
+    #print ("row sums: " + str(np.absolute(array_sum)))
+    #print ("max row sum: " + str(max(np.absolute(array_sum))))
+    #print ("number of row with maximum sum: " + str(np.argmax(np.absolute(array_sum))))
+    for j in range(len(A)): # for each element in the row, that is not correlated, we change aij to wi/wj
+        A[np.argmax(np.absolute(array_sum)),j] = weights[np.argmax(np.absolute(array_sum))]/weights[j]
+    print (A)
+    return (A)
 
 def main():
     A = np.array([[1,4,3,1,3,4],[1/4,1,7,3,1/5,1],[1/3,1/7,1,1/5,1/5,1/6],[1,1/3,5,1,1,1/3],[1/3,5,5,1,1,3],[1/4,1,6,3,1/3,1]])
     print ("consistencyRelation = "+str(consistencyCheck(A)))
+
     """numberCrit = str(input("How many criteria do you want to enter? Type an integer: "))
     if numberCrit.isdigit(): # error handling
         A = matrix(number= int(numberCrit), matrType= 'criterion')
