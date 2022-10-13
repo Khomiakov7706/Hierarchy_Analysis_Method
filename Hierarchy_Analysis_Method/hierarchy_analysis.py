@@ -3,7 +3,6 @@ from re import T
 import view
 
 def vector(matrix):
-    newMatrix = np.zeros(len(matrix))
     matSum = np.zeros(len(matrix))
     for i in range(0, len(matrix)):
         vect = matrix[:, i]
@@ -14,7 +13,7 @@ def vector(matrix):
     return matSum
 
 def matrix(number, matrType, criterionNumber=0):
-    """Function for creating a pairwise matrix"""
+    #Function for creating a pairwise matrix
     A = np.ones([number, number])
     importance = [i for i in range(1, 10)] # list of allowed importance values
     importance2 = [i/10 for i in range(1, 10)]
@@ -32,7 +31,7 @@ def matrix(number, matrType, criterionNumber=0):
                 else:
                     print("It is an incorrect value. Let's start again \n")
                     main()
-    return A
+    return consistencyCheck(A)
 
 def consistencyCheck(initialMatrix): # function checks the consistency of the matrix
     A = initialMatrix
@@ -58,21 +57,14 @@ def consistencyCheck(initialMatrix): # function checks the consistency of the ma
     consistensyIndex = (max(eigenvalue)-len(A))/(len(A)-1)
     print('consistensyIndex='+str(consistensyIndex))
     consistencyRelation = consistensyIndex/meanConsistencyIndex[len(A)]
-    print('consistencyRelation='+str(consistencyRelation))
+    print('consistencyRelation='+str(consistencyRelation)+'\n')
     if (consistencyRelation < 0.1):
-        return consistencyRelation
+        return (A)
     else:
         return (consistencyCheck(consistencyOptimization(A))) 
 
 def consistencyOptimization(initialMatrix): # function helps to get the correct consistency of the matrix
     A = initialMatrix 
-    """A = np.array(
-    [[1,4,3,1,3,4],
-    [1/4,1,7,3,1/5,1],
-    [1/3,1/7,1,1/5,1/5,1/6],
-    [1,1/3,5,1,1,1/3],
-    [1/3,5,5,1,1,3],
-    [1/4,1,6,3,1/3,1]])"""
     weights = vector(A)
     array_sum = [] 
     for i in range(len(A)): 
@@ -87,25 +79,25 @@ def consistencyOptimization(initialMatrix): # function helps to get the correct 
         print(str(A[np.argmax(np.absolute(array_sum)),j])+" element to: ")
         A[np.argmax(np.absolute(array_sum)),j] = weights[np.argmax(np.absolute(array_sum))]/weights[j]
         print(A[np.argmax(np.absolute(array_sum)),j])
-        print('\n')
-    print (A)
+    print ("\noptimized matrix is:\n"+str(A)+"\n")
     return (A)
 
-def main():
+def main(): 
     A = np.array([[1,4,3,1,3,4],[1/4,1,7,3,1/5,1],[1/3,1/7,1,1/5,1/5,1/6],[1,1/3,5,1,1,1/3],[1/3,5,5,1,1,3],[1/4,1,6,3,1/3,1]])
-    print ("consistencyRelation = "+str(consistencyCheck(A)))
-
-    """numberCrit = str(input("How many criteria do you want to enter? Type an integer: "))
-    if numberCrit.isdigit(): # error handling
+    numberCrit = len(A)
+    print ("consistent matrix :\n"+str(consistencyCheck(A)))
+    """
+    numberCrit = str(input("How many criteria do you want to enter? Type an integer: "))
+    if ((numberCrit.isdigit()) & (numberCrit < 11)): # error handling
         A = matrix(number= int(numberCrit), matrType= 'criterion')
         print(A)
         weights = vector(A)
         for i in range(len(weights)):
             print(f'Criterion {i} = {np.round(weights[i], 2)}')
     else:
-        print("Something went wrong. Let's try again \n")
+        print("You passed a wrong character. Let's try again \n")
         main()
-
+    
     numberAlt = str(input("How many alternatives do you want to enter? Type an integer: "))
     if numberAlt.isdigit(): # error handling
         leftTable = np.zeros([int(numberAlt),int(numberCrit)])
@@ -115,11 +107,11 @@ def main():
             A = matrix(number= int(numberAlt), matrType='alternative', criterionNumber= i+1)
             print(A)
             leftTable[:, i] = vector(A)
-        print()
-        print("Table of indicators of selected alternatives:")
+
+        print("\nTable of indicators of selected alternatives:")
         print(leftTable)
     else:
-        print("Something went wrong. Let's try again \n")
+        print("You passed a wrong character. Let's try again \n")
         main()
     
     result = np.matmul(leftTable, weights)
@@ -128,8 +120,7 @@ def main():
     print()
     for i in range(len(result)):
             print(f'Alternative {i+1} = {np.round(result[i], 2)}')
-            """
-
+"""
 
 if __name__ == "__main__":
     main()
