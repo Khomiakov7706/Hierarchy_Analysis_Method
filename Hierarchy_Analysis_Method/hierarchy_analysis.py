@@ -22,7 +22,7 @@ def matrix(number, matrType, criterionNumber=0):
         for j in range(0, number):
             if i < j:
                 if criterionNumber > 0:
-                    a = str(input(f'Compare importance of {matrType} {i+1} to {matrType} {j+1} in criterion {criterionNumber}. \nType an integer from 0.1 to 9: '))
+                    a = str(input(f'Compare importance of {matrType} {i+1} to {matrType} {j+1} in criterion {criterionNumber}:\n '))
                 else:
                     a = str(input(f'How much {matrType} {i+1} is more important than {matrType} {j+1}? Type an integer from 0.1 to 9: '))
                 if float(a) in value: # error handling
@@ -33,7 +33,7 @@ def matrix(number, matrType, criterionNumber=0):
                     main()
     return consistencyCheck(A)
 
-def consistencyCheck(initialMatrix): # function checks the consistency of the matrix
+def consistencyCheck(initialMatrix, recursionNumber = 0): # function checks the consistency of the matrix
     A = initialMatrix
     meanConsistencyIndex = {
         1 : 0,
@@ -58,10 +58,12 @@ def consistencyCheck(initialMatrix): # function checks the consistency of the ma
     print('consistensyIndex='+str(consistensyIndex))
     consistencyRelation = consistensyIndex/meanConsistencyIndex[len(A)]
     print('consistencyRelation='+str(consistencyRelation)+'\n')
-    if (consistencyRelation < 0.1):
+    if (consistencyRelation <= 0.1):
         return (A)
+    elif (recursionNumber < len(initialMatrix)):
+        return (consistencyCheck(consistencyOptimization(A),recursionNumber+1))
     else:
-        return (consistencyCheck(consistencyOptimization(A))) 
+        return (A)
 
 def consistencyOptimization(initialMatrix): # function helps to get the correct consistency of the matrix
     A = initialMatrix 
@@ -71,9 +73,7 @@ def consistencyOptimization(initialMatrix): # function helps to get the correct 
         array_sum.append(0) 
         for j in range(len(A)): 
             array_sum [i] += (A[i,j] - weights[i] / weights[j]) 
-    #print ("row sums: " + str(np.absolute(array_sum)))
-    #print ("max row sum: " + str(max(np.absolute(array_sum))))
-    #print ("number of row with maximum sum: " + str(np.argmax(np.absolute(array_sum))))
+
     print("\nchanged elements in string number " + str(np.argmax(np.absolute(array_sum))) + ": ")
     for j in range(len(A)): # for each element in the row, that is not correlated, we change aij to wi/wj
         print(str(A[np.argmax(np.absolute(array_sum)),j])+" element to: ")
@@ -102,9 +102,9 @@ def main():
     if ((numberAlt.isdigit()) & (int(numberAlt) < 11)): # error handling
         leftTable = np.zeros([int(numberAlt),int(numberCrit)])
         print(leftTable)
-        for i in range(0, int(numberCrit)):
+        for i in range(int(numberCrit)):
             print(f'table  {i+1}' )
-            A = matrix(number= int(numberAlt), matrType='alternative', criterionNumber= i+1)
+            A = matrix(number= int(numberAlt), matrType='alternative', criterionNumber=i+1)
             print(A)
             leftTable[:, i] = vector(A)
 
@@ -115,13 +115,11 @@ def main():
         main()
     
     result = np.matmul(leftTable, weights)
-    print()
+    print('\n')
     print(result)
-    print()
+    print('\n')
     for i in range(len(result)):
             print(f'Alternative {i+1} = {np.round(result[i], 2)}')
-    
-    print ("consistent matrix :\n"+str(consistencyCheck(A)))
-
+    print('\nthe best alternative is ' + str(np.argmax(result)+1))
 if __name__ == "__main__":
     main()
